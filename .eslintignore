@@ -1,0 +1,15 @@
+dist/
+config/
+scripts/
+build/
+node_modules/
+iconfont/
+.vscode
+
+*.config.js
+*.config.*.js
+*.d.ts
+*.json
+*.png
+*.css
+*.scss
