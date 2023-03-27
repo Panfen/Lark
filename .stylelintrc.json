@@ -1,4 +1,0 @@
-{
-  "extends": ["@aistarfish/eslint-config/style"],
-  "rules": {}
-}
