@@ -1,3 +1,7 @@
+/**
+ * 精灵基类，定义精灵的通用属性
+ */
+
 import React from 'react'
 import type { ISprite } from '../type'
 

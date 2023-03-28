@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { GraphicEditorCore } from './graphic-editor'
 import { type ISprite } from './type'
 import LineSpriteMeta from './sprites/line'
+import RectSpriteMeta from './sprites/rect'
 
 const defaultSpriteList: ISprite[] = [
   {
@@ -20,6 +21,18 @@ const defaultSpriteList: ISprite[] = [
       size: { width: 160, height: 100 },
       angle: 0
     }
+  },
+  {
+    id: 'RectSpriteMeta1',
+    type: 'RectSprite',
+    props: {
+      fill: '#fdc5bf'
+    },
+    attrs: {
+      coordinate: { x: 100, y: 100 },
+      size: { width: 160, height: 100 },
+      angle: 0
+    }
   }
 ]
 
@@ -29,6 +42,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     const api = editorRef.current
     api?.registerSprite(LineSpriteMeta)
+    api?.registerSprite(RectSpriteMeta)
     api?.addSpriteToStage(defaultSpriteList)
   }, [])
 

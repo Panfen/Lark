@@ -1,3 +1,7 @@
+/**
+ * 线性精灵
+ */
+
 import React from 'react'
 import type { ISpriteMeta, IDefaultGraphicProps } from '../../type'
 import { BaseSprite } from '../BaseSprite'

@@ -12,11 +12,29 @@ export interface ICoordinate {
   y: number
 }
 
+// 宽高和坐标
+export interface ISizeCoordinate {
+  width: number
+  height: number
+  x: number
+  y: number
+}
+
 // 精灵属性
 export interface ISpriteAttrs {
   size: ISize
   coordinate: ICoordinate
   angle: number
+  style?: React.CSSProperties
+  editing?: boolean
+  creating?: boolean
+}
+
+// 精灵属性
+export interface ISpriteAttrsLike {
+  size?: ISize
+  coordinate?: ICoordinate
+  angle?: number
   style?: React.CSSProperties
   editing?: boolean
   creating?: boolean
@@ -50,3 +68,13 @@ export interface IDefaultGraphicProps {
   strokeLinecap?: 'butt' | 'round' | 'square'
   defaultStrokeLinecap?: 'butt' | 'round' | 'square'
 }
+export interface Line {
+  x1: number
+  y1: number
+  x2: number
+  y2: number
+}
+
+export type IStageApis = any
+
+export type EventTypeEnum = any

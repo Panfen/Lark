@@ -1,7 +1,9 @@
 import React from 'react'
 import { Stage } from './stage'
 import { Sprite } from './sprite'
-import { type ISprite, type ISpriteMeta } from './type'
+import { type ISpriteAttrsLike, type ISprite, type ISpriteMeta } from './type'
+import { findSpriteInSpriteList } from './helper'
+import Drag from './edit/drag'
 
 interface IProps {
   width: number
@@ -11,13 +13,39 @@ interface IProps {
 
 interface IState {
   spriteList: ISprite[]
+  activeSpriteList: ISprite[]
 }
 
 export class GraphicEditorCore extends React.Component<IProps, IState> {
   private readonly registerSpriteMetaMap: Record<string, ISpriteMeta> = {}
 
+  stage: any = {
+    api: {},
+    store: () => ({})
+  }
+
   readonly state: IState = {
-    spriteList: []
+    spriteList: [],
+    activeSpriteList: []
+  }
+
+  componentDidMount (): void {
+    const stageDom = document.getElementById('graphic-editor-stage')
+    const rect = stageDom?.getBoundingClientRect()
+
+    this.stage = {
+      apis: this,
+      store: () => {
+        return {
+          ...this.state,
+          ...this.props,
+          coordinate: {
+            x: rect?.x,
+            y: rect?.y
+          }
+        }
+      }
+    }
   }
 
   // 注册精灵
@@ -41,28 +69,88 @@ export class GraphicEditorCore extends React.Component<IProps, IState> {
     this.setState({ spriteList: newSpriteList })
   }
 
+  updateActiveSpriteList = (activeSpriteList: ISprite[]) => {
+    this.setState({ activeSpriteList })
+  }
+
+  // 更新精灵列表
+  public updateSpriteList = (spriteList: ISprite[], addToHistory = false) => {
+    const needUpdateSpriteList = spriteList
+    const spriteMap = {} as any
+    needUpdateSpriteList.forEach(
+      (sprite: ISprite) => (spriteMap[sprite.id] = sprite)
+    )
+    this.setState(({ spriteList }: IState) => {
+      const newSpriteList = spriteList.map((sprite: ISprite) => {
+        const newSprite = spriteMap[sprite.id]
+        if (!newSprite) {
+          return sprite
+        }
+        return { ...newSprite } // 去重？
+      })
+      return {
+        spriteList: newSpriteList
+      }
+    })
+  }
+
+  // 更新精灵配置
+  public updateSpriteAttrs = (
+    sprite: ISprite | string,
+    attrs: ISpriteAttrsLike,
+    addToHistory: false
+  ) => {
+    this.setState(({ spriteList, activeSpriteList }: IState) => {
+      const newSpriteList = [...spriteList]
+      const newActiveSpriteList = [...activeSpriteList]
+
+      const { sprite: targetSprite, index } = findSpriteInSpriteList(spriteList, sprite)
+      if (targetSprite != null) {
+        const newSprite = {
+          ...targetSprite,
+          attrs: {
+            ...targetSprite.attrs,
+            ...attrs
+          }
+        }
+        newSpriteList[index] = newSprite
+        const { index: j } = findSpriteInSpriteList(activeSpriteList, sprite)
+        if (j !== -1) {
+          newActiveSpriteList[j] = newSprite
+        }
+      }
+      return {
+        spriteList: newSpriteList,
+        activeSpriteList: newActiveSpriteList
+      }
+    })
+  }
+
   render () {
-    const { registerSpriteMetaMap } = this
+    const { registerSpriteMetaMap, stage } = this
     const { width, height } = this.props
-    const { spriteList } = this.state
+    const { spriteList, activeSpriteList } = this.state
     return (
-      <Stage width={width} height={height}>
+      <Stage id="graphic-editor-stage" width={width} height={height}>
         {/* 精灵列表 */}
         {spriteList.map((sprite) => {
           // 从注册好的精灵映射里拿到meta和精灵组件
           const spriteMeta = registerSpriteMetaMap[sprite.type]
           const SpriteComponent = (spriteMeta?.spriteComponent as any) || (() => <text fill="red">Undefined Sprite: {sprite.type}</text>)
-          const { attrs } = sprite
           return (
-            <Sprite
-              key={sprite.id}
-              x={attrs.coordinate.x}
-              y={attrs.coordinate.y}
-            >
+            <Sprite key={sprite.id} sprite={sprite} >
               <SpriteComponent sprite={sprite} />
             </Sprite>
           )
         })}
+
+        <Drag
+          scale={1}
+          stage={stage}
+          pressShift={false}
+          activeSpriteList={activeSpriteList}
+          registerSpriteMetaMap={registerSpriteMetaMap}
+        />
 
       </Stage>
     )

@@ -11,6 +11,7 @@ module.exports = {
       directory: path.resolve(__dirname, './dist')
     }
   },
+  devtool: 'inline-source-map',
   module: {
     rules: [
       {
