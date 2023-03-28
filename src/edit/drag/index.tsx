@@ -9,8 +9,9 @@ import {
   type ISizeCoordinate,
   type ISize
 } from '../../type'
+import Move from './move'
 import Resize from './resize'
-import { Rotate } from './rotate'
+import Rotate from './rotate'
 
 interface IProps {
   scale: number
@@ -143,6 +144,18 @@ class LegoActiveSpriteContainer extends React.Component<IProps, IState> {
           fill="none"
           className="active-sprites-content"
         />
+
+        {/* 移动 */}
+        {ready && (
+          <Move
+            info={info}
+            angle={angle}
+            stage={stage}
+            activeSpriteList={activeSpriteList}
+            mousePointInStage={this.mousePointInStage}
+            getInitAttrMapData={this.getInitAttrMapData}
+          />
+        )}
 
         {/* 修改尺寸的锚点 */}
         {ready && (

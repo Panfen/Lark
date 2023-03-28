@@ -24,7 +24,7 @@ interface IState {
   mousePos: ICoordinate
 }
 
-export class Rotate extends React.Component<IProps, IState> {
+export default class Rotate extends React.Component<IProps, IState> {
   initData: any = {}
 
   state: IState = {
@@ -89,11 +89,10 @@ export class Rotate extends React.Component<IProps, IState> {
       rotating: true
     })
     activeSpriteList.forEach((sprite: ISprite) => {
-      const newAttrs = {
+      sprite.attrs = {
         ...sprite.attrs,
         angle
       }
-      sprite.attrs = newAttrs
     })
     stage.apis.updateSpriteList(activeSpriteList)
   }
