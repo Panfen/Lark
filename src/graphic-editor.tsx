@@ -97,8 +97,7 @@ export class GraphicEditorCore extends React.Component<IProps, IState> {
   // 更新精灵配置
   public updateSpriteAttrs = (
     sprite: ISprite | string,
-    attrs: ISpriteAttrsLike,
-    addToHistory: false
+    attrs: ISpriteAttrsLike
   ) => {
     this.setState(({ spriteList, activeSpriteList }: IState) => {
       const newSpriteList = [...spriteList]

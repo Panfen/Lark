@@ -84,7 +84,6 @@ class Resize extends React.Component<IProps, IState> {
   }
 
   resize_mouseMove = (e: any) => {
-    console.log('move')
     const { resizePos } = this
     const { activeSpriteList, stage } = this.props
     const { initSizeMap, initPosMap } = this.initData
@@ -105,6 +104,7 @@ class Resize extends React.Component<IProps, IState> {
       const { width, height, x, y } = result
       newAttrs.size = { width, height }
       newAttrs.coordinate = { x, y }
+
       stage.apis.updateSpriteAttrs(sprite, newAttrs)
       this.setState({ resizing: true })
     }

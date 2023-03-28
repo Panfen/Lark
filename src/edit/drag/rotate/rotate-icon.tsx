@@ -1,3 +1,5 @@
+import React from 'react'
+
 const RotateIcon = (props: any) => (
   <svg
     viewBox="0 0 1024 1024"

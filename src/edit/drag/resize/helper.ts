@@ -125,6 +125,7 @@ export const handlePositionResize = ({
   return { width, height, x, y } as ISizeCoordinate
 }
 
+// 计算缩放后的大小和位置
 export const computeResizeRect = (
   resizePos: string,
   initSize: ISize,
