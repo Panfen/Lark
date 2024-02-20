@@ -62,7 +62,7 @@ export interface IDefaultGraphicProps {
   x?: number
   y?: number
   stroke?: string
-  strokeWidth: number
+  strokeWidth?: number
   fill?: string
   strokeDasharray?: string
   strokeLinecap?: 'butt' | 'round' | 'square'
